@@ -1,0 +1,7 @@
+
+
+原文: In the simple examples we’ve used this far, there’s only one window on the screen; the
+root window. This is automatically created when you call the Tk constructor, and is of
+course very convenient for simple applications:
+译文: 在我们使用这一点的简单示例中，屏幕上只有一个窗口;根窗口。当您调用 Tk
+构造函数时，将自动创建此功能，当然对于简单的应用程序非常方便：

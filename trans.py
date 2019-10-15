@@ -16,9 +16,7 @@ headers = {
 
 class TranslatorBing:
     def __init__(self, args):
-        self.text = args.text[0]
-        self.dir = args.dir[0]
-        self.file = args.file[0]
+        self.args = args
         self.url = 'https://cn.bing.com/ttranslatev3?isVertical=1&&IG=63E3E72E23044A0A9286E3C149F19F77&IID=translator.5028.2'
         self.color = Colored()
         self.flag = 0
@@ -26,25 +24,25 @@ class TranslatorBing:
     def create_data(self, language):
         self.data = {
             'fromLang': 'auto-detect',
-            'text': self.text,
+            'text': self.args.text[0],
             'to': language
         }
 
     def is_Chinese(self):
         zh_pattern = re.compile(u'[\u4e00-\u9fa5]+')
-        mo = zh_pattern.search(self.text)
+        mo = zh_pattern.search(self.args.text[0])
         if mo:
             return True
         else:
             return False
 
     def show_text(self, width1, width2):
-        if self.dir:
-            origin = textwrap.fill('原文: ' + self.text, width=width1)
+        if self.args.dir[0]:
+            origin = textwrap.fill('原文: ' + self.args.text[0], width=width1)
             target = textwrap.fill('译文: ' + self.trans_text, width=width2)
             lines = ['\n\n', origin, '\n', target]
-            coding = file_encoding(self.file)
-            with open(self.dir, 'a', encoding=coding) as f:
+            coding = file_encoding(self.args.file[0])
+            with open(self.args.dir[0], 'a', encoding=coding) as f:
                 f.writelines(lines)
 
         print('')
@@ -61,7 +59,7 @@ class TranslatorBing:
         response = requests.post(self.url, data=self.data, headers=headers)
         result = response.json()
         self.trans_text = result[0].get('translations')[0].get('text')
-        self.origin = '原文: ' + self.color.cyan(self.text)
+        self.origin = '原文: ' + self.color.cyan(self.args.text[0])
         self.target = '译文: ' + self.color.green(self.trans_text)
         if self.flag == 1:
             self.show_text(55, 90)
